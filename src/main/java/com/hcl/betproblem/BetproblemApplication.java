@@ -1,4 +1,4 @@
-package com.hcl.betproblem.betproblem;
+package com.hcl.betproblem;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
