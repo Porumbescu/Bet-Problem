@@ -8,20 +8,32 @@ public class Session {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="sessionId")
-    private Integer sessionKey;
+    @Column(name="session_id")
+    private Integer sessionId;
+
     @Column(name = "customer_id")
     private Integer customerId;
+    @Column(name = "session_key")
+    private String sessionKey;
     @Column(name = "creation_date")
     private LocalDateTime creationDate;
 
     public Session() {
     }
 
-    public Session(Integer customerId, Integer sessionKey, LocalDateTime creationDate) {
+    public Session(Integer sessionId, Integer customerId, String sessionKey, LocalDateTime creationDate) {
+        this.sessionId = sessionId;
         this.customerId = customerId;
         this.sessionKey = sessionKey;
         this.creationDate = creationDate;
+    }
+
+    public Integer getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(Integer sessionId) {
+        this.sessionId = sessionId;
     }
 
     public Integer getCustomerId() {
@@ -32,11 +44,11 @@ public class Session {
         this.customerId = customerId;
     }
 
-    public Integer getSessionKey() {
+    public String getSessionKey() {
         return sessionKey;
     }
 
-    public void setSessionKey(Integer sessionKey) {
+    public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
     }
 

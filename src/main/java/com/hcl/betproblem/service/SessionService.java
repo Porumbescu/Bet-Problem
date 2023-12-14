@@ -16,7 +16,7 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public Integer getOrCreate(Integer customerId) {
+    public String getOrCreate(Integer customerId) {
         Session session;
         //the last available session for the given customerId
         session = sessionRepository.findAllByCustomerId(customerId).get(0);
@@ -29,6 +29,7 @@ public class SessionService {
                 Session newSession = new Session();
                 newSession.setCustomerId(customerId);
                 newSession.setCreationDate(date);
+                //TO DO: set session key
                 sessionRepository.save(newSession);
                 return newSession.getSessionKey();
             }
@@ -36,6 +37,7 @@ public class SessionService {
             Session newSession = new Session();
             newSession.setCustomerId(customerId);
             newSession.setCreationDate(date);
+            //TO DO: set session key
             sessionRepository.save(newSession);
             return newSession.getSessionKey();
         }
