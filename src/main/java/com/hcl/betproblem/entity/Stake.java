@@ -1,7 +1,6 @@
 package com.hcl.betproblem.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name="stake")
@@ -10,10 +9,10 @@ public class Stake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="stake_id")
     private Long stakeId;
-
-    @Column(name = "bet_offer")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private BetOffer betOffer;
-    @Column(name = "session")
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Session session;
     @Column(name = "stake_amount")
     private Double stakeAmount;

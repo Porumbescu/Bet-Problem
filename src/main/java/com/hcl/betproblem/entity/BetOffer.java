@@ -1,7 +1,6 @@
 package com.hcl.betproblem.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
 
 @Entity
 @Table(name="bet_offer")
