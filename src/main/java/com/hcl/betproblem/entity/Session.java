@@ -1,8 +1,6 @@
 package com.hcl.betproblem.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.annotation.Id;
-
 import java.time.LocalDateTime;
 @Entity
 @Table(name="session")
