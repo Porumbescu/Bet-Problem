@@ -16,7 +16,7 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public String getOrCreate(Integer customerId) {
+    public Integer getOrCreate(Integer customerId) {
         Session session;
         //the last available session for the given customerId
         session = sessionRepository.findAllByCustomerId(customerId).get(0);

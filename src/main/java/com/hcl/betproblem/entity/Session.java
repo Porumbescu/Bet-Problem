@@ -9,7 +9,7 @@ public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="sessionId")
-    private String sessionKey;
+    private Integer sessionKey;
     @Column(name = "customer_id")
     private Integer customerId;
     @Column(name = "creation_date")
@@ -18,7 +18,7 @@ public class Session {
     public Session() {
     }
 
-    public Session(Integer customerId, String sessionKey, LocalDateTime creationDate) {
+    public Session(Integer customerId, Integer sessionKey, LocalDateTime creationDate) {
         this.customerId = customerId;
         this.sessionKey = sessionKey;
         this.creationDate = creationDate;
@@ -32,11 +32,11 @@ public class Session {
         this.customerId = customerId;
     }
 
-    public String getSessionKey() {
+    public Integer getSessionKey() {
         return sessionKey;
     }
 
-    public void setSessionKey(String sessionKey) {
+    public void setSessionKey(Integer sessionKey) {
         this.sessionKey = sessionKey;
     }
 

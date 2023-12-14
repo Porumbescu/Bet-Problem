@@ -16,8 +16,8 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-    @GetMapping(value = "/{customerId}/session")
-    public String getOrCreateSession(@PathVariable int customerId){
-        return sessionService.getOrCreate(customerId);
-    }
+//    @GetMapping(value = "/{customerId}/session")
+//    public Integer getOrCreateSession(@PathVariable int customerId){
+//        return sessionService.getOrCreate(customerId);
+//    }
 }
