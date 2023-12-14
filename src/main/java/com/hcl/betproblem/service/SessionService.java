@@ -40,4 +40,10 @@ public class SessionService {
             return newSession.getSessionKey();
         }
     }
+
+    public boolean isValidSession (String sessionKey) {
+        // TODO: 12/14/2023
+        // custom exceptions?
+        return false;
+    }
 }
