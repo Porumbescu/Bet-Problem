@@ -1,10 +1,13 @@
 package com.hcl.betproblem.controller;
 
+import com.hcl.betproblem.dto.StakeDTO;
 import com.hcl.betproblem.service.SessionService;
 import com.hcl.betproblem.service.StakeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
@@ -24,13 +27,19 @@ public class StakeController {
         if (!sessionService.isValidSession(sessionKey)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session key");
         }
-        stakeService.postStake(betOfferId, sessionKey, stakeAmount);
+
+        StakeDTO stakeDTO = new StakeDTO();
+        stakeDTO.setBetOfferId(betOfferId);
+        stakeDTO.setSessionKey(sessionKey);
+        stakeDTO.setStakeAmount(stakeAmount);
+
+        stakeService.postStake(stakeDTO);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{betOfferId}/highstakes")
-    public ResponseEntity<String> getHighStakes(@PathVariable Long betOfferId) {
-        String highStakes = stakeService.getHighStakes(betOfferId);
-        return ResponseEntity.ok(highStakes);
+    public ResponseEntity<List<StakeDTO>> getHighStakes(@PathVariable Long betOfferId) {
+        List<StakeDTO> highStakesDTOs = stakeService.getHighStakes(betOfferId);
+        return ResponseEntity.ok(highStakesDTOs);
     }
 }

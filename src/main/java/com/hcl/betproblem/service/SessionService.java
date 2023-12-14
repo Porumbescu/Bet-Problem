@@ -1,12 +1,16 @@
 package com.hcl.betproblem.service;
 
+import com.hcl.betproblem.dto.SessionDTO;
 import com.hcl.betproblem.entity.Session;
+import com.hcl.betproblem.mapper.SessionMapper;
 import com.hcl.betproblem.repository.SessionRepository;
+import com.hcl.betproblem.util.RandomStringGenerator;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class SessionService {
@@ -16,31 +20,27 @@ public class SessionService {
         this.sessionRepository = sessionRepository;
     }
 
-    public String getOrCreate(Integer customerId) {
+    public SessionDTO getOrCreate(Integer customerId) {
         Session session;
         //the last available session for the given customerId
-        session = sessionRepository.findAllByCustomerId(customerId).get(0);
-        LocalDateTime date = LocalDateTime.now();
+        List<Session> sessions = sessionRepository.findAllByCustomerId(customerId);
+        session = sessions.isEmpty() ? null : sessions.get(0);
+
+        LocalDateTime now = LocalDateTime.now();
         if (session != null) {
-            long minutes = ChronoUnit.MINUTES.between(date, session.getCreationDate());
+            long minutes = ChronoUnit.MINUTES.between(session.getCreationDate(), now);
             if (minutes < 10) {
-                return session.getSessionKey();
-            } else {
-                Session newSession = new Session();
-                newSession.setCustomerId(customerId);
-                newSession.setCreationDate(date);
-                //TO DO: set session key
-                sessionRepository.save(newSession);
-                return newSession.getSessionKey();
+                return SessionMapper.toDTO(session);
             }
-        } else {
-            Session newSession = new Session();
-            newSession.setCustomerId(customerId);
-            newSession.setCreationDate(date);
-            //TO DO: set session key
-            sessionRepository.save(newSession);
-            return newSession.getSessionKey();
         }
+
+        Session newSession = new Session();
+        newSession.setCustomerId(customerId);
+        newSession.setCreationDate(now);
+        newSession.setSessionKey(RandomStringGenerator.generateRandomString());
+        sessionRepository.save(newSession);
+
+        return SessionMapper.toDTO(newSession);
     }
 
     public boolean isValidSession (String sessionKey) {

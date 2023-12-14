@@ -1,5 +1,6 @@
 package com.hcl.betproblem.controller;
 
+import com.hcl.betproblem.dto.SessionDTO;
 import com.hcl.betproblem.service.SessionService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,8 +17,8 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-//    @GetMapping(value = "/{customerId}/session")
-//    public Integer getOrCreateSession(@PathVariable int customerId){
-//        return sessionService.getOrCreate(customerId);
-//    }
+    @GetMapping("/{customerId}/session")
+    public SessionDTO getOrCreateSession(@PathVariable int customerId){
+        return sessionService.getOrCreate(customerId);
+    }
 }
