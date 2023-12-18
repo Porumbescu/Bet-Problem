@@ -12,4 +12,6 @@ import java.util.List;
 public interface SessionRepository extends JpaRepository<Session, Long> {
     @Query(nativeQuery = true, value = "select * from session where customer_id = :customerId order by creation_date desc")
     List<Session> findAllByCustomerId(@Param("customerId")final Integer customerId);
+
+    Session findBySessionKey(String sessionKey);
 }
