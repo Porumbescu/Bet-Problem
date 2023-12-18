@@ -1,6 +1,9 @@
 package com.hcl.betproblem.controller;
 
 import com.hcl.betproblem.dto.StakeDTO;
+import com.hcl.betproblem.dto.StakeRequestBody;
+import com.hcl.betproblem.entity.Session;
+import com.hcl.betproblem.repository.SessionRepository;
 import com.hcl.betproblem.service.SessionService;
 import com.hcl.betproblem.service.StakeService;
 import org.slf4j.Logger;
@@ -17,37 +20,41 @@ public class StakeController {
     private final StakeService stakeService;
     private final SessionService sessionService;
 
+    private final SessionRepository sessionRepository;
+
     private static final Logger logger = LoggerFactory.getLogger(StakeController.class);
 
 
-    public StakeController(StakeService stakeService, SessionService sessionService) {
+    public StakeController(StakeService stakeService, SessionService sessionService, SessionRepository sessionRepository) {
         this.stakeService = stakeService;
         this.sessionService = sessionService;
+        this.sessionRepository = sessionRepository;
     }
 
     @PostMapping("/{betOfferId}/stake")
     public ResponseEntity<?> postStake(@PathVariable Long betOfferId,
                                        @RequestParam String sessionKey,
-                                       @RequestBody Double stakeAmount) {
+                                       @RequestBody StakeRequestBody stakeAmount) {
 
         logger.info("Received stake post request: betOfferId={}, sessionKey={}, stakeAmount={}", betOfferId, sessionKey, stakeAmount);
+        Session session = sessionRepository.findBySessionKey(sessionKey);
 
-        if (!sessionService.isValidSession(sessionKey)) {
+        if (!sessionService.isValidSession(session)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid session key");
         }
 
         StakeDTO stakeDTO = new StakeDTO();
         stakeDTO.setBetOfferId(betOfferId);
         stakeDTO.setSessionKey(sessionKey);
-        stakeDTO.setStakeAmount(stakeAmount);
+        stakeDTO.setStakeAmount(stakeAmount.getStakeAmount());
 
         stakeService.postStake(stakeDTO);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{betOfferId}/highstakes")
-    public ResponseEntity<List<StakeDTO>> getHighStakes(@PathVariable Long betOfferId) {
-        List<StakeDTO> highStakesDTOs = stakeService.getHighStakes(betOfferId);
+    public ResponseEntity<String> getHighStakes(@PathVariable Long betOfferId) {
+        String highStakesDTOs = stakeService.getHighStakes(betOfferId);
         return ResponseEntity.ok(highStakesDTOs);
     }
 }

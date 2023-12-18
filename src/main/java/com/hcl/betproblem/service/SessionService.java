@@ -43,9 +43,8 @@ public class SessionService {
         return SessionMapper.toDTO(newSession);
     }
 
-    public boolean isValidSession (String sessionKey) {
-        // TODO: 12/14/2023
-        // custom exceptions?
-        return false;
+    public boolean isValidSession (Session session) {
+        LocalDateTime now = LocalDateTime.now();
+        return ChronoUnit.MINUTES.between(session.getCreationDate(), now) <= 10;
     }
 }

@@ -9,10 +9,10 @@ public class Stake {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="stake_id")
     private Long stakeId;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private BetOffer betOffer;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Session session;
     @Column(name = "stake_amount")
     private Double stakeAmount;

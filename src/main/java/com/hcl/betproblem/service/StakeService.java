@@ -16,7 +16,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class StakeService {
@@ -57,8 +61,20 @@ public class StakeService {
         return ChronoUnit.MINUTES.between(session.getCreationDate(), now) >= 10;
     }
 
-    public List<StakeDTO> getHighStakes(Long betOfferId)  {
-        // TODO: 12/14/2023
-        return null;
+    public String getHighStakes(Long betOfferId)  {
+        List<Stake> stakesList = stakeRepository.findTopStakes(betOfferId);
+        HashMap<Integer, Double> top20 = new HashMap<Integer, Double>();
+        int counter = 0;
+        while (top20.size() < 20 && stakesList.size() > counter) {
+            Stake stake = stakesList.get(counter);
+            if (!top20.containsKey(stake.getSession().getCustomerId())) {
+                top20.put(stakesList.get(counter).getSession().getCustomerId(), stake.getStakeAmount());
+            }
+            counter++;
+        }
+        return top20.entrySet().stream()
+                .sorted(Map.Entry.<Integer, Double>comparingByValue().reversed())
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.joining(","));
     }
 }
